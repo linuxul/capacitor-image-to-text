@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 import Vision
 import Capacitor
 
@@ -7,7 +8,13 @@ import Capacitor
  * here: https://capacitor.ionicframework.com/docs/plugins/ios
  */
 @objc(CapacitorOcr)
-public class CapacitorOcr: CAPPlugin {
+public class CapacitorOcr: CAPPlugin, CAPBridgedPlugin {
+    public let identifier = "CapacitorOcr"
+    public let jsName = "CapacitorOcr"
+    public let pluginMethods: [CAPPluginMethod] = [
+        CAPPluginMethod(name: "detectText", returnType: .promise)
+    ]
+
     @objc func detectText(_ call: CAPPluginCall) {
         if let filename = call.getString("filename") {
             let filePath = String(filename.dropFirst(7))

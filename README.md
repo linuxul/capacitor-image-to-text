@@ -188,7 +188,7 @@ iOS and Android are supported. Web is not.
 | Skewed Text                      | Yes                         | Unreliable                                                                                                           |
 | Rotated Text (<~ 45deg)          | Yes                         | Yes (but with noise)                                                                                                 |
 | On-Device                        | Yes                         | Yes                                                                                                                  |
-| SDK/ios Version                  | ios 13.0 or newer           | Targets API level >= 16<br>Uses Gradle >= 4.1<br>com.android.tools.build:gradle >= v3.2.1<br>compileSdkVersion >= 28 |
+| SDK/ios Version                  | iOS 17.0 or newer           | Android 13 (API level 33) or newer<br>Requires the forked Capacitor runtime (Kotlin/Swift) on both platforms         |
 |                                  |                             |                                                                                                                      |
 
 ## License

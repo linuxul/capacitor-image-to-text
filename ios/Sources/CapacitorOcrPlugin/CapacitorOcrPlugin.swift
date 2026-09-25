@@ -12,16 +12,17 @@ public class CapacitorOcr: CAPPlugin, CAPBridgedPlugin {
     public let identifier = "CapacitorOcr"
     public let jsName = "CapacitorOcr"
     public let pluginMethods: [CAPPluginMethod] = [
-        CAPPluginMethod(name: "detectText", returnType: .promise)
+        .promise("detectText", CapacitorOcr.detectText)
     ]
 
-    @objc func detectText(_ call: CAPPluginCall) {
+    // detectText stays synchronous: it hands the recognition to a background queue, and Vision's perform blocks the
+    // thread it runs on, which an async method would take from the cooperative pool.
+    func detectText(_ call: CAPPluginCall) throws {
         if let filename = call.getString("filename") {
             let filePath = String(filename.dropFirst(7))
 
             guard let image = UIImage(contentsOfFile: filePath) else {
-                call.reject("Could not load image from path")
-                return
+                throw CAPPluginError("Could not load image from path")
             }
 
             TextDetector(call: call, image: image).detectText()
@@ -32,14 +33,13 @@ public class CapacitorOcr: CAPPlugin, CAPBridgedPlugin {
             }
 
             guard let data = Data(base64Encoded: base64), let image = UIImage(data: data) else {
-                call.reject("Could not load image from base64")
-                return
+                throw CAPPluginError("Could not load image from base64")
             }
 
             TextDetector(call: call, image: image).detectText()
 
         } else {
-            call.reject("Invalid image input")
+            throw CAPPluginError("Invalid image input")
         }
     }
 }
